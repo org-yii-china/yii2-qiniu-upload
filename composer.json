@@ -1,0 +1,33 @@
+{
+    "name": "yii-china/yii2-qiniu-upload",
+    "description": "yii2集成七牛文件上传",
+    "type": "yii2-extension",
+    "keywords": ["yii2","图片上传","七牛","文件上传"],
+
+    "require": {
+        "php":">=5.4.0",
+        "qiniu/php-sdk": "v7.0.7"
+    },
+
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "huangxianan",
+            "email": "xianan_huang@163.com"
+        }
+    ],
+    "minimum-stability": "dev",
+
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
+    },
+
+    "autoload": {
+        "psr-4": {
+            "ycn\\qiniu\\": "./src"
+        }
+    }
+}
