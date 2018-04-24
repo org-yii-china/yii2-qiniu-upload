@@ -27,7 +27,7 @@
 
     "autoload": {
         "psr-4": {
-            "ycn\\qiniu\\": "./src"
+            "Ycn\\Qiniu\\": "./src"
         }
     }
 }
