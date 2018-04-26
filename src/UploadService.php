@@ -53,7 +53,7 @@ class UploadService
      */
     public function getToken()
     {
-        $this->uploadToken;
+        return $this->uploadToken;
     }
 
 
