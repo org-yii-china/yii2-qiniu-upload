@@ -49,10 +49,9 @@ class UploadService
     /**
      * 获取uploadToken
      *
-     * @param $bucket
      * @return string
      */
-    public function getToken($bucket)
+    public function getToken()
     {
         $this->uploadToken;
     }
