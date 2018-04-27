@@ -1,6 +1,7 @@
 <?php
 namespace Ycn\Qiniu;
 
+use Ycn\Qiniu\Assets\UploadAsset;
 use yii\widgets\InputWidget;
 
 /**
@@ -19,7 +20,7 @@ class UploadWidget extends InputWidget
 
     public function run()
     {
-        UploadWidget::register($this->view);
+        UploadAsset::register($this->view);
         return $this->renderInputHtml('file');
     }
 }
