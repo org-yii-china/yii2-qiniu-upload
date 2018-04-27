@@ -29,16 +29,46 @@ class UploadWidget extends InputWidget
      * @param string $type
      * @return string
      */
-    public function renderInputHtml($type){
+    public function renderInputHtml($type)
+    {
+        $inputId = Html::getInputId($this->model,$this->attribute);
+        $js = <<<JS
+        $("#{$inputId}").change(function(){
+          // getObjectURL是自定义的函数，见下面  
+          // this.files[0]代表的是选择的文件资源的第一个，因为上面写了 multiple="multiple" 就表示上传文件可能不止一个  
+          // ，但是这里只读取第一个   
+          var objUrl = getObjectURL(this.files[0]) ;  
+          // 这句代码没什么作用，删掉也可以  
+          // console.log("objUrl = "+objUrl) ;  
+          if (objUrl) {  
+            // 在这里修改图片的地址属性  
+            $("#{$inputId}-show").attr("src", objUrl) ; 
+            $("#{$inputId}-value").val(objUrl) ;
+          }  
+        }) ;  
 
-        $options = ['id'=>'file','onchange'=>'c()'];
-        $this->options = array_merge($this->options,$options);
+        function getObjectURL(file) {  
+          var url = null ;   
+          // 下面函数执行的效果是一样的，只是需要针对不同的浏览器执行不同的 js 函数而已  
+          if (window.createObjectURL!=undefined) { // basic  
+            url = window.createObjectURL(file) ;  
+          } else if (window.URL!=undefined) { // mozilla(firefox)  
+            url = window.URL.createObjectURL(file) ;  
+          } else if (window.webkitURL!=undefined) { // webkit or chrome  
+            url = window.webkitURL.createObjectURL(file) ;  
+          }  
+          return url ;  
+        }  
+JS;
+        $this->view->registerJs($js);
 
         if ($this->hasModel()) {
             $html = Html::activeInput($type, $this->model, $this->attribute, $this->options);
-            $html .= Html::img("",['id' => 'show', 'width'=>200]);
+            $html .= Html::img("/",['id' => $inputId.'-show', 'width'=>200]);
+            $html .= Html::hiddenInput(Html::getInputName($this->model,$this->attribute)."[value]",'',['id'=>$inputId."-value"]);
             return $html;
         }
         return Html::input($type, $this->name, $this->value, $this->options);
+
     }
 }
