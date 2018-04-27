@@ -3,6 +3,7 @@ namespace Ycn\Qiniu;
 
 use Ycn\Qiniu\Assets\UploadAsset;
 use yii\widgets\InputWidget;
+use yii\helpers\Html;
 
 /**
  * Created by PhpStorm.
@@ -22,5 +23,19 @@ class UploadWidget extends InputWidget
     {
         UploadAsset::register($this->view);
         return $this->renderInputHtml('file');
+    }
+
+    /**
+     * @param string $type
+     * @return string
+     */
+    public function renderInputHtml($type){
+
+        if ($this->hasModel()) {
+            $html = Html::activeInput($type, $this->model, $this->attribute, $this->options);
+            $html .= Html::img("",['id' => 'show', 'width'=>200]);
+            return $html;
+        }
+        return Html::input($type, $this->name, $this->value, $this->options);
     }
 }
