@@ -31,6 +31,9 @@ class UploadWidget extends InputWidget
      */
     public function renderInputHtml($type){
 
+        $options = ['id'=>'file','onchange'=>'c()'];
+        $this->options = array_merge($this->options,$options);
+
         if ($this->hasModel()) {
             $html = Html::activeInput($type, $this->model, $this->attribute, $this->options);
             $html .= Html::img("",['id' => 'show', 'width'=>200]);
