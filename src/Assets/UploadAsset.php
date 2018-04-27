@@ -18,7 +18,6 @@ class UploadAsset extends AssetBundle
     ];
 
     public $js = [
-        'js/itdoc.js'
     ];
 
     public $depends = [
