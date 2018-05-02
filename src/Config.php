@@ -8,7 +8,7 @@
 
 
 return [
-    'imgTpye' => [
+    'imgType' => [
         '2' => 'jpg',
         '3' => 'png'
     ],

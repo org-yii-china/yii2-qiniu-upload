@@ -41,7 +41,7 @@ class UploadService
      *
      * @var array
      */
-    private $config;
+    private $config = [];
 
     /**
      * 实例对象
@@ -66,6 +66,12 @@ class UploadService
     {
         if (!self::$_instance instanceof self) {
             self::$_instance = new self();
+
+            //加载配置
+            $_config = require(__DIR__ . '/Config.php');
+            self::$_instance->setConfig($_config);
+
+            //生成token
             self::$_instance->setToken($accessKey, $secretKey, $bucket);
             //注入上传管理对象
             self::$_instance->setUploadManager();
@@ -104,8 +110,7 @@ class UploadService
     public function setConfig(array $config)
     {
         //加载配置
-        $_config = require(__DIR__ . '/Config.php');
-        $this->config = ArrayHelper::merge($_config, $config);
+        $this->config = ArrayHelper::merge($this->config, $config);
 
     }
 
@@ -138,7 +143,7 @@ class UploadService
             throw new \Exception('图片类型不支持');
         }
 
-        $uploadFileName = !empty($uploadFileName) ?: date("YmdHis").rand(10000,99999).'.'.$this->imgType[$type];
+        $uploadFileName = !empty($uploadFileName) ?: date("YmdHis").rand(10000,99999).'.'.$this->config['imgType'][$type];
 
         //上传文件获取返回
         list($response, $error) = $this->uploadManager->putFile($this->uploadToken, $uploadFileName, $filePath);
