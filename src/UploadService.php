@@ -71,7 +71,7 @@ class UploadService
             self::$_instance->setUploadManager();
         }
 
-        return self::$instance;
+        return self::$_instance;
     }
 
     /**
