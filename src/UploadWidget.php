@@ -34,16 +34,15 @@ class UploadWidget extends InputWidget
         $inputId = Html::getInputId($this->model,$this->attribute);
         $js = <<<JS
         $("#{$inputId}").change(function(){
+            var reader = new FileReader();
+            reader.readAsDataURL(this.files[0]);
           // getObjectURL是自定义的函数，见下面  
           // this.files[0]代表的是选择的文件资源的第一个，因为上面写了 multiple="multiple" 就表示上传文件可能不止一个  
           // ，但是这里只读取第一个   
-          var objUrl = getObjectURL(this.files[0]) ;  
-          // 这句代码没什么作用，删掉也可以  
-          // console.log("objUrl = "+objUrl) ;  
+          var objUrl = getObjectURL(this.files[0]) ;
           if (objUrl) {  
             // 在这里修改图片的地址属性  
-            $("#{$inputId}-show").attr("src", objUrl) ; 
-            $("#{$inputId}-value").val(objUrl) ;
+            $("#{$inputId}-show").attr("src", objUrl) ;
           }  
         }) ;  
 
@@ -65,7 +64,6 @@ JS;
         if ($this->hasModel()) {
             $html = Html::activeInput($type, $this->model, $this->attribute, $this->options);
             $html .= Html::img("/",['id' => $inputId.'-show', 'width'=>200]);
-            $html .= Html::hiddenInput(Html::getInputName($this->model,$this->attribute)."[value]",'',['id'=>$inputId."-value"]);
             return $html;
         }
         return Html::input($type, $this->name, $this->value, $this->options);
