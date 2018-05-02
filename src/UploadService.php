@@ -138,12 +138,12 @@ class UploadService
 
         list($width, $height, $type, $attr) = getimagesize($filePath);
 
-        if(!isset($this->config['imgType'][$type])){
+        if(!isset($this->config['supportImgType'][$type])){
 
             throw new \Exception('图片类型不支持');
         }
 
-        $uploadFileName = !empty($uploadFileName) ?: date("YmdHis").rand(10000,99999).'.'.$this->config['imgType'][$type];
+        $uploadFileName = !empty($uploadFileName) ?: date("YmdHis").rand(10000,99999).'.'.$this->config['supportImgType'][$type];
 
         //上传文件获取返回
         list($response, $error) = $this->uploadManager->putFile($this->uploadToken, $uploadFileName, $filePath);
