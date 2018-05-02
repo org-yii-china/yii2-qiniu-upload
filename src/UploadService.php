@@ -153,6 +153,7 @@ class UploadService
             throw new \Exception($error->message());
         }
 
+        $response['filename'] = $uploadFileName;
         return $response;
     }
 
