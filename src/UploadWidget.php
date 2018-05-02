@@ -6,7 +6,7 @@ use yii\widgets\InputWidget;
 use yii\helpers\Html;
 
 /**
- * Created by PhpStorm.
+ * 图片上传组件
  *
  * @author huangxianan <xianan_huang@163.com>
  * Date: 2018/4/26

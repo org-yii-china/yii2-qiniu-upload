@@ -3,9 +3,11 @@ namespace Ycn\Qiniu;
 
 use Qiniu\Auth;
 use Qiniu\Storage\UploadManager;
+use yii\helpers\ArrayHelper;
 
 /**
- * 七牛鉴权对象
+ * 图片上传对象
+ *
  * User: huangxianan <xianan_huang@163.com>
  * Date: 2018/4/23
  * Time: 下午3:26
@@ -30,28 +32,81 @@ class UploadService
     /**
      * 上传token
      *
-     * @var
+     * @var string
      */
     private $uploadToken;
 
     /**
-     * 图片类型支持 JPG PNG
+     * 配置
      *
      * @var array
      */
-    public $imgType = ['2' => 'jpg', '3' => 'png'];
+    private $config;
+
+    /**
+     * 实例对象
+     *
+     * @var object
+     */
+    static private $_instance;
 
 
-    public function __construct($accessKey, $secretKey, $bucket)
+    private function __construct()
+    {
+    }
+
+    /**
+     * 防止克隆对象
+     */
+    private function __clone()
+    {
+    }
+
+    static public function getInstance($accessKey, $secretKey, $bucket)
+    {
+        if (!self::$_instance instanceof self) {
+            self::$_instance = new self();
+            self::$_instance->setToken($accessKey, $secretKey, $bucket);
+            //注入上传管理对象
+            self::$_instance->setUploadManager();
+        }
+
+        return self::$instance;
+    }
+
+    /**
+     * @param $accessKey
+     * @param $secretKey
+     * @param $bucket
+     */
+    public function setToken($accessKey, $secretKey, $bucket)
     {
         //注入Auth类
         $this->auth = new Auth($accessKey, $secretKey);
 
         //生成token
         $this->uploadToken = $this->auth->uploadToken($bucket);
+    }
 
-        //注入上传管理对象
+    /**
+     * 设置上传管理类
+     */
+    public function setUploadManager()
+    {
         $this->uploadManager = new UploadManager();
+    }
+
+    /**
+     * 设置配置
+     *
+     * @param $config
+     */
+    public function setConfig(array $config)
+    {
+        //加载配置
+        $_config = require(__DIR__ . '/Config.php');
+        $this->config = ArrayHelper::merge($_config, $config);
+
     }
 
     /**
@@ -78,7 +133,7 @@ class UploadService
 
         list($width, $height, $type, $attr) = getimagesize($filePath);
 
-        if(!isset($this->imgType[$type])){
+        if(!isset($this->config['imgType'][$type])){
 
             throw new \Exception('图片类型不支持');
         }
