@@ -66,7 +66,10 @@ JS;
             $html .= Html::img("/",['id' => $inputId.'-show', 'width'=>200]);
             return $html;
         }
-        return Html::input($type, $this->name, $this->value, $this->options);
+
+        $html = Html::input($type, $this->name, $this->value, $this->options);
+        $html .= Html::img("/",['id' => $inputId.'-show', 'width'=>200]);
+        return $html;
 
     }
 }
