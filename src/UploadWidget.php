@@ -72,12 +72,12 @@ JS;
             $attribute = $this->attribute;
             $imageUrl = $this->url.$this->model->$attribute;
             $html = Html::activeInput($type, $this->model, $this->attribute, $this->options);
-            $html .= Html::img($imageUrl,['id' => $inputId.'-show', 'width'=>200]);
+            $html .= Html::img($imageUrl,['id' => $inputId.'-show', 'width'=>200, 'class'=>'form-img']);
             return $html;
         }
 
         $html = Html::input($type, $this->name, $this->value, $this->options);
-        $html .= Html::img($this->url.$this->value,['id' => $inputId.'-show', 'width'=>200]);
+        $html .= Html::img($this->url.$this->value,['id' => $inputId.'-show', 'width'=>200, 'class'=>'form-img']);
         return $html;
 
     }
