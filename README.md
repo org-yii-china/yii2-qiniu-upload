@@ -1,4 +1,4 @@
-# 图片上传 yii2-qiniu-upload
+图片上传 yii2-qiniu-upload
 ====
 yii2图片上传到七牛的扩展
 
