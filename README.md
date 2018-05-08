@@ -36,7 +36,9 @@ view
 
     ...
 
-    <?= $form->field($model, 'image')->widget(\Ycn\Qiniu\UploadWidget::className(),[]) ?>
+    <?= $form->field($model, 'image')->widget(\Ycn\Qiniu\UploadWidget::className(),['options'=>[
+            'domain' => 'http://img.itdocs.org'  //七牛图片服务域名
+    ]]) ?>
     
     ...
 
