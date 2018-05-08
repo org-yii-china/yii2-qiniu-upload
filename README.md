@@ -1,5 +1,8 @@
-# 图片上传到七牛服务器 yii2-qiniu-upload
-yii2集成七牛图片上传扩展
+# 图片上传 yii2-qiniu-upload
+====
+yii2图片上传到七牛的扩展
+
+@from Yii中文网（www.yii-china.com）
 
 安装（Installation）
 ------------
