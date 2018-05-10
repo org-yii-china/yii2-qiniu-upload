@@ -2,6 +2,7 @@
 namespace Ycn\Qiniu;
 
 use Qiniu\Auth;
+use Qiniu\Storage\BucketManager;
 use Qiniu\Storage\UploadManager;
 use yii\helpers\ArrayHelper;
 
@@ -37,6 +38,11 @@ class UploadService
     private $uploadToken;
 
     /**
+     * 资源管理类
+     * @var
+     */
+    private $bucketManager;
+    /**
      * 配置
      *
      * @var array
@@ -71,35 +77,60 @@ class UploadService
             $_config = require(__DIR__ . '/Config.php');
             self::$_instance->setConfig($_config);
 
+            //注入auth类
+            self::$_instance->setAuth($accessKey,$secretKey);
+
             //生成token
-            self::$_instance->setToken($accessKey, $secretKey, $bucket);
-            //注入上传管理对象
+            self::$_instance->setToken($bucket);
+
+            //注入上传管理类
             self::$_instance->setUploadManager();
+
+            //注入资源管理类
+            self::$_instance->setBucketManager();
+
         }
 
         return self::$_instance;
     }
 
     /**
+     * 注入 auth 类
+     *
      * @param $accessKey
      * @param $secretKey
-     * @param $bucket
      */
-    public function setToken($accessKey, $secretKey, $bucket)
+    public function setAuth($accessKey, $secretKey)
     {
         //注入Auth类
         $this->auth = new Auth($accessKey, $secretKey);
+    }
 
+    /**
+     * 生成token
+     *
+     * @param $bucket
+     */
+    public function setToken($bucket)
+    {
         //生成token
         $this->uploadToken = $this->auth->uploadToken($bucket);
     }
 
     /**
-     * 设置上传管理类
+     * 注入上传管理类
      */
     public function setUploadManager()
     {
         $this->uploadManager = new UploadManager();
+    }
+
+    /**
+     * 注入资源管理类
+     */
+    public function setBucketManager()
+    {
+        $this->bucketManager = new BucketManager($this->auth);
     }
 
     /**
@@ -155,6 +186,17 @@ class UploadService
 
         $response['filename'] = $uploadFileName;
         return $response;
+    }
+
+    /**
+     * 删除资源接口
+     *
+     * @param $bucket
+     * @param $key
+     */
+    public function delete($bucket, $key)
+    {
+        $this->bucketManager->delete($bucket, $key);
     }
 
 }
